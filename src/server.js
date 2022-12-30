@@ -35,6 +35,8 @@ class Server {
   _setupRoutes() {
     this.app.get('/ping', (req, res) => res.send('pong'))
 
+    this.app.use('/api', require('./api/auth/auth.routes'))
+
     this.app.use(notFoundMiddleware)
     this.app.use(errorMiddleware)
   }
