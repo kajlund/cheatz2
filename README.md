@@ -8,20 +8,7 @@ The backend is written in node.js using the express web application framework.
 
 ### Database
 
-- Postgres and sqLite
-- [Knex.js Guide](https://knexjs.org/guide/)
-
-#### Migrations
-
-Install knex both locally `npm i knex` and globally for easier access `npm i -g knex`
-
- ```bash
-   $ knex migrate:make <name> --knexfile=./src/db/knexfile.js      # create migration
-   $ knex migrate:latest --knexfile=./src/db/knexfile.js           # migrate the latest
-   $ knex migrate:up --knexfile=./src/db/knexfile.js               # run all migrations not already run
-   $ knex migrate:rollback --knexfile=./src/db/knexfile.js         # rollback latest migration
-   $ knex migrate:rollback --all  --knexfile=./src/db/knexfile.js  # rollback all migrations
- `
+- Postgres using [Prisma](https://www.prisma.io/)
 
 ### Generic
 
@@ -42,7 +29,6 @@ Install knex both locally `npm i knex` and globally for easier access `npm i -g 
 ### Validation
 
 - [Validator.js](https://github.com/validatorjs/validator.js)
-- [Express Validators](https://express-validator.github.io/docs/)
 
 ### View Handling
 
