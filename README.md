@@ -10,6 +10,18 @@ The backend is written in node.js using the express web application framework.
 
 - Postgres using [Prisma](https://www.prisma.io/)
 
+```bash
+npm i prisma
+# Create schema
+npx prisma init
+
+# prototyping push changes directly
+npx prisma db push
+
+# Create initial migration
+npx prisma migrate dev --name init
+```
+
 ### Generic
 
 - [Mdn](https://developer.mozilla.org/en-US/)
