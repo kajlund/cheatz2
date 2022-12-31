@@ -1,4 +1,4 @@
-const { StatusCodes } = require('http-status-codes')
+const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const { UnauthorizedError } = require('../../modules/errors')
 const { generateTokens, passwordsMatch } = require('./auth.service')
@@ -22,6 +22,7 @@ exports.logon = async (req, res, next) => {
     if (!validation.isValid) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         success: false,
+        message: ReasonPhrases.BAD_REQUEST,
         errors: validation.errors,
       })
     }
@@ -36,7 +37,7 @@ exports.logon = async (req, res, next) => {
     const tokens = await generateTokens(user)
 
     // Return result
-    res.send(sanitizedResponse(user, tokens))
+    res.send({ success: true, message: 'Logged on', data: sanitizedResponse(user, tokens) })
   } catch (e) {
     next(e)
   }
@@ -48,6 +49,7 @@ exports.signup = async (req, res, next) => {
     if (!validation.isValid) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         success: false,
+        message: ReasonPhrases.BAD_REQUEST,
         errors: validation.errors,
       })
     }
@@ -57,7 +59,7 @@ exports.signup = async (req, res, next) => {
     const tokens = await generateTokens(user)
 
     // Return result
-    res.send(sanitizedResponse(user, tokens))
+    res.send({ success: true, message: 'Logged on', data: sanitizedResponse(user, tokens) })
   } catch (e) {
     next(e)
   }

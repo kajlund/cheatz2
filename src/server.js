@@ -29,13 +29,14 @@ class Server {
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
     this.app.use(cors())
-    this.app.use(morgan('simple'))
+    this.app.use(morgan('dev'))
   }
 
   _setupRoutes() {
     this.app.get('/ping', (req, res) => res.send('pong'))
 
     this.app.use('/api', require('./api/auth/auth.routes'))
+    this.app.use('/api/municipalities', require('./api/municipalities/municipality.routes'))
 
     this.app.use(notFoundMiddleware)
     this.app.use(errorMiddleware)

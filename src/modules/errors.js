@@ -9,6 +9,12 @@ class AppError extends Error {
   }
 }
 
+class BadRequestError extends AppError {
+  constructor(message = ReasonPhrases.BAD_REQUEST, status = StatusCodes.BAD_REQUEST) {
+    super(message, status)
+  }
+}
+
 class InternalServerError extends AppError {
   constructor(message = ReasonPhrases.INTERNAL_SERVER_ERROR, status = StatusCodes.INTERNAL_SERVER_ERROR) {
     super(message, status)
@@ -33,4 +39,11 @@ class UnauthorizedError extends AppError {
   }
 }
 
-module.exports = { AppError, InternalServerError, MaximumFileSizeException, NotFoundError, UnauthorizedError }
+module.exports = {
+  AppError,
+  BadRequestError,
+  InternalServerError,
+  MaximumFileSizeException,
+  NotFoundError,
+  UnauthorizedError,
+}
