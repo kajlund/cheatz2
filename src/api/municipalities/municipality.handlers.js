@@ -12,11 +12,13 @@ const { NotFoundError } = require('../../modules/errors')
 const { validateMunicipality, validateMunicipalityUpdate } = require('./municipality.validators')
 
 exports.deleteById = async (req, res, next) => {
+  const { id } = req.params
   try {
-    const data = await deleteMunicipalityById(req.params.id)
-    res.status(200).json({
+    const data = await deleteMunicipalityById(id)
+    if (!data) throw new NotFoundError()
+    res.status(StatusCodes.OK).json({
       success: true,
-      message: 'Deleted',
+      message: `Deleted municipality id: ${id}`,
       data,
     })
   } catch (e) {
@@ -27,17 +29,26 @@ exports.deleteById = async (req, res, next) => {
 exports.getAll = async (req, res, next) => {
   try {
     const data = await getAllMunicipalities()
-    res.json({ success: true, message: 'List municipalities', data })
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: 'List all municipalities',
+      data,
+    })
   } catch (e) {
     next(e)
   }
 }
 
 exports.getById = async (req, res, next) => {
+  const { id } = req.params
   try {
-    const data = await getMunicipalityById(req.params.id)
+    const data = await getMunicipalityById(id)
     if (!data) throw new NotFoundError()
-    res.json({ success: true, message: 'Find by id', data })
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: `Found municipality by id: ${id}`,
+      data,
+    })
   } catch (e) {
     next(e)
   }
@@ -47,7 +58,11 @@ exports.getByNamePart = async (req, res, next) => {
   const { name } = req.params
   try {
     const data = await getMunicipalitiesByName(name)
-    res.json({ success: true, message: `Find by name: ${name} `, data })
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: `Find by name: ${name}`,
+      data,
+    })
   } catch (e) {
     next(e)
   }
@@ -66,7 +81,7 @@ exports.addMunicipality = async (req, res, next) => {
 
     const data = await addMunicipality(validation.data)
     // Return result
-    res.send({
+    res.status(StatusCodes.CREATED).json({
       success: true,
       message: 'Added municipality',
       data,
@@ -77,6 +92,7 @@ exports.addMunicipality = async (req, res, next) => {
 }
 
 exports.updateMunicipality = async (req, res, next) => {
+  const { id } = req.params
   try {
     const validation = await validateMunicipalityUpdate(req)
     if (!validation.isValid) {
@@ -86,11 +102,11 @@ exports.updateMunicipality = async (req, res, next) => {
         errors: validation.errors,
       })
     }
-    const data = await updateMunicipality(req.params.id, validation.data)
+    const data = await updateMunicipality(id, validation.data)
     // Return result
-    res.send({
+    res.status(StatusCodes.OK).json({
       success: true,
-      message: 'Updated municipality',
+      message: `Updated municipality with id: ${id}`,
       data,
     })
   } catch (e) {

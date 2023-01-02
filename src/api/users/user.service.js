@@ -1,19 +1,18 @@
 const { hashPassword } = require('../auth/auth.service')
-const prisma = require('../../db')
+const UserRepository = require('./user.repository')
 
 exports.addUser = async (data) => {
   data.password = await hashPassword(data.password)
-  const user = await prisma.user.create({ data })
+  const user = await UserRepository.create(data)
   return user
 }
 
 exports.getUserByEmail = async (email) => {
-  const user = await prisma.user.findUnique({ where: { email } })
-  return user
+  return await UserRepository.findUnique({ email })
 }
 
 exports.getUserById = async (id) => {
-  return await prisma.user.findUnique({ where: { id } })
+  return await UserRepository.findUnique({ id })
 }
 
 exports.isUserRegistered = async (email) => {

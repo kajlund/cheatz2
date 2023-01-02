@@ -1,38 +1,29 @@
-const prisma = require('../../db')
+const MunicipalityRepository = require('./municipality.repository')
 
 exports.addMunicipality = async (data) => {
-  return await prisma.municipality.create({
-    data,
-  })
+  return await MunicipalityRepository.create(data)
 }
 
 exports.deleteMunicipalityById = async (id) => {
-  const deleted = await prisma.municipality.delete({
-    where: { id },
-  })
-  return deleted
+  return await MunicipalityRepository.destroy(id)
 }
 
 exports.getAllMunicipalities = async () => {
-  return await prisma.municipality.findMany()
+  return await MunicipalityRepository.findMany()
 }
 
 exports.getMunicipalitiesByName = async (name) => {
-  return await prisma.municipality.findMany({
-    where: {
-      name: { contains: name },
-    },
+  return await MunicipalityRepository.findMany({
+    name: { contains: name },
   })
 }
 
 exports.getMunicipalityById = async (id) => {
-  return await prisma.municipality.findUnique({
-    where: { id },
-  })
+  return await MunicipalityRepository.findUnique({ id })
 }
 
 exports.getMunicipalityByCode = async (code) => {
-  return await prisma.municipality.findUnique({ where: { code } })
+  return await MunicipalityRepository.findUnique({ code })
 }
 
 exports.isMunicipalityRegistered = async (code) => {
@@ -41,8 +32,5 @@ exports.isMunicipalityRegistered = async (code) => {
 }
 
 exports.updateMunicipality = async (id, data) => {
-  return await prisma.municipality.update({
-    where: { id },
-    data,
-  })
+  return await MunicipalityRepository.update(id, data)
 }
