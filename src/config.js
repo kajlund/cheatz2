@@ -20,7 +20,7 @@ const config = {
     port: PORT,
     nodeEnv: ENV,
     saltRounds: SALT_ROUNDS,
-    jwtAccessTokenExpiresIn: 1000 * 60 * 60 * 24, // 24hr
+    jwtAccessTokenExpiresIn: 3600 * 24, // 24hr
     jwtAccessTokenSecret: JWT_ACCESS_TOKEN_SECRET,
     jwtRefreshTokenSecret: JWT_REFRESH_TOKEN_SECRET,
     log: {
