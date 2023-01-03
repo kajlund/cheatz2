@@ -1,10 +1,22 @@
-const express = require('express')
+const AuthController = require('./auth.controller')
 
-const authHandlers = require('./auth.handlers')
-
-const router = express.Router()
-
-router.post('/logon', authHandlers.logon)
-router.post('/signup', authHandlers.signup)
-
-module.exports = router
+module.exports = {
+  group: {
+    prefix: '',
+    middleware: [],
+  },
+  routes: [
+    {
+      method: 'post',
+      path: '/logon',
+      middleware: [],
+      handler: AuthController.logon,
+    },
+    {
+      method: 'post',
+      path: '/signup',
+      middleware: [],
+      handler: AuthController.register,
+    },
+  ],
+}

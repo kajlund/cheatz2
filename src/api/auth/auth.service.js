@@ -4,13 +4,13 @@ const { compare, hash } = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const cnf = require('../../config')
-const prisma = require('../../db')
+const TokenRepository = require('./token.repository')
 
 exports.generateTokens = async (user) => {
   const payload = { id: user.id, email: user.email, username: user.username }
-  const accessToken = await generateAccessToken(payload)
-  const refreshToken = await generateRefreshToken()
-  await prisma.token.create({ data: { userId: user.id, token: refreshToken } })
+  const accessToken = generateAccessToken(payload)
+  const refreshToken = generateRefreshToken()
+  await TokenRepository.create({ userId: user.id, token: refreshToken })
 
   return {
     accessToken,
@@ -18,12 +18,12 @@ exports.generateTokens = async (user) => {
   }
 }
 
-const generateAccessToken = async (payload) => {
-  return await jwt.sign(payload, cnf.jwtAccessTokenSecret, { expiresIn: cnf.jwtAccessTokenExpiresIn })
+const generateAccessToken = (payload) => {
+  return jwt.sign(payload, cnf.jwtAccessTokenSecret, { expiresIn: cnf.jwtAccessTokenExpiresIn })
 }
 
-const generateRefreshToken = async (length = 64) => {
-  return await crypto.randomBytes(length).toString('hex')
+const generateRefreshToken = (length = 64) => {
+  return crypto.randomBytes(length).toString('hex')
 }
 
 exports.hashPassword = async (pwd) => {

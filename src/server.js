@@ -3,14 +3,14 @@ const express = require('express')
 const morgan = require('morgan')
 
 const logger = require('./modules/logger')
-const notFoundMiddleware = require('./middleware/not-found')
-const errorMiddleware = require('./middleware/error-handler')
+const Router = require('./router')
 
 class Server {
   constructor(port) {
     this.port = port
     this.app = express()
     this.setupMiddleware()
+    this.router = Router
   }
 
   _listen() {
@@ -34,12 +34,7 @@ class Server {
 
   _setupRoutes() {
     this.app.get('/ping', (req, res) => res.send('pong'))
-
-    this.app.use('/api', require('./api/auth/auth.routes'))
-    this.app.use('/api/municipalities', require('./api/municipalities/municipality.routes'))
-
-    this.app.use(notFoundMiddleware)
-    this.app.use(errorMiddleware)
+    this.router.create(this.app)
   }
 
   _setViewEngine() {}

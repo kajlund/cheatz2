@@ -11,7 +11,7 @@ exports.auth = async (req, res, next) => {
   if (!token) next(new UnauthorizedError('Missing bearer token'))
 
   try {
-    const decoded = await jwt.verify(token, cnf.jwtAccessTokenSecret)
+    const decoded = jwt.verify(token, cnf.jwtAccessTokenSecret)
     req.user = await getUserById(decoded.id)
     next()
   } catch (err) {

@@ -1,15 +1,47 @@
-const express = require('express')
-
 const mncpHandlers = require('./municipality.handlers')
 const { auth, adminOnly } = require('../../middleware/auth')
 
-const router = express.Router()
-
-router.get('/', auth, mncpHandlers.getAll)
-router.get('/byname/:name', auth, mncpHandlers.getByNamePart)
-router.get('/:id', auth, mncpHandlers.getById)
-router.post('/', auth, adminOnly, mncpHandlers.addMunicipality)
-router.put('/:id', auth, adminOnly, mncpHandlers.updateMunicipality)
-router.delete('/:id', auth, adminOnly, mncpHandlers.deleteById)
-
-module.exports = router
+module.exports = {
+  group: {
+    prefix: '/municipalities',
+    middleware: [auth],
+  },
+  routes: [
+    {
+      method: 'get',
+      path: '/',
+      middleware: [],
+      handler: mncpHandlers.getAll,
+    },
+    {
+      method: 'get',
+      path: '/byname/:name',
+      middleware: [],
+      handler: mncpHandlers.getByNamePart,
+    },
+    {
+      method: 'get',
+      path: '/:id',
+      middleware: [],
+      handler: mncpHandlers.getById,
+    },
+    {
+      method: 'post',
+      path: '/',
+      middleware: [adminOnly],
+      handler: mncpHandlers.addMunicipality,
+    },
+    {
+      method: 'put',
+      path: '/:id',
+      middleware: [adminOnly],
+      handler: mncpHandlers.updateMunicipality,
+    },
+    {
+      method: 'delete',
+      path: '/:id',
+      middleware: [adminOnly],
+      handler: mncpHandlers.deleteById,
+    },
+  ],
+}

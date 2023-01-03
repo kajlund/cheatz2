@@ -1,8 +1,8 @@
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const { UnauthorizedError } = require('../../modules/errors')
-const { generateTokens, passwordsMatch } = require('./auth.service')
 const { validateLogon, validateSignup } = require('./auth.validators')
+const { generateTokens, passwordsMatch } = require('./auth.service')
 const { addUser, getUserByEmail } = require('../users/user.service')
 
 const sanitizedResponse = (user, tokens) => {
@@ -16,8 +16,8 @@ const sanitizedResponse = (user, tokens) => {
   }
 }
 
-exports.logon = async (req, res, next) => {
-  try {
+class AuthController {
+  async logon(req, res) {
     const validation = await validateLogon(req.body)
     if (!validation.isValid) {
       return res.status(StatusCodes.BAD_REQUEST).json({
@@ -37,14 +37,10 @@ exports.logon = async (req, res, next) => {
     const tokens = await generateTokens(user)
 
     // Return result
-    res.send({ success: true, message: 'Logged on', data: sanitizedResponse(user, tokens) })
-  } catch (e) {
-    next(e)
+    res.json({ success: true, message: 'Logged on', data: sanitizedResponse(user, tokens) })
   }
-}
 
-exports.signup = async (req, res, next) => {
-  try {
+  async register(req, res, next) {
     const validation = await validateSignup(req.body)
     if (!validation.isValid) {
       return res.status(StatusCodes.BAD_REQUEST).json({
@@ -59,8 +55,12 @@ exports.signup = async (req, res, next) => {
     const tokens = await generateTokens(user)
 
     // Return result
-    res.send({ success: true, message: 'Logged on', data: sanitizedResponse(user, tokens) })
-  } catch (e) {
-    next(e)
+    res.json({
+      success: true,
+      message: 'Registered user',
+      data: sanitizedResponse(user, tokens),
+    })
   }
 }
+
+module.exports = new AuthController()
