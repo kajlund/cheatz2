@@ -16,6 +16,49 @@ enum USER_ROLE {
   ADMIN
 }
 
+enum CACHE_TYPE {
+  TRADITIONAL
+  MYSTERY
+  MULTI
+  EARTH
+  LETTERBOX
+  EVENT
+  CITO
+  MEGA
+  GIGA
+  WHERIGO
+  HQ
+  LAB
+  VIRTUAL
+  WEBCAM
+}
+
+model Geocache {
+  id              String        @id @default(uuid())
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  gc              String        @unique
+  kind            CACHE_TYPE    @default(TRADITIONAL)
+  name            String
+  coords          String
+  verified        Boolean       @default(false)
+  municipalityId  String
+
+  municipality    Municipality  @relation(fields: [municipalityId], references: [id])
+  comments        CacheComment[]
+}
+
+model CacheComment {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  body      String
+  cacheId   String
+  cache     Geocache  @relation(fields: [cacheId], references: [id])
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+}
+
 model User {
   id        String    @id @default(uuid())
   createdAt DateTime  @default(now())
@@ -24,6 +67,7 @@ model User {
   password  String
   role      USER_ROLE @default(PROSPECT)
   tokens    Token[]
+  comments  CacheComment[]
 }
 
 model Token {
@@ -41,4 +85,5 @@ model Municipality {
   updatedAt   DateTime @updatedAt
   code        Int      @unique
   name        String
+  caches      Geocache[]
 }
