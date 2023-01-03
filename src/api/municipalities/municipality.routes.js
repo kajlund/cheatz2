@@ -1,4 +1,4 @@
-const mncpHandlers = require('./municipality.handlers')
+const MunicipalityController = require('./municipality.controller')
 const { auth, adminOnly } = require('../../middleware/auth')
 
 module.exports = {
@@ -11,37 +11,37 @@ module.exports = {
       method: 'get',
       path: '/',
       middleware: [],
-      handler: mncpHandlers.getAll,
+      handler: MunicipalityController.findAll,
     },
     {
       method: 'get',
       path: '/byname/:name',
       middleware: [],
-      handler: mncpHandlers.getByNamePart,
+      handler: MunicipalityController.getByNamePart,
     },
     {
       method: 'get',
       path: '/:id',
       middleware: [],
-      handler: mncpHandlers.getById,
+      handler: MunicipalityController.getById,
     },
     {
       method: 'post',
       path: '/',
       middleware: [adminOnly],
-      handler: mncpHandlers.addMunicipality,
+      handler: MunicipalityController.addMunicipality,
     },
     {
       method: 'put',
       path: '/:id',
       middleware: [adminOnly],
-      handler: mncpHandlers.updateMunicipality,
+      handler: MunicipalityController.updateMunicipality,
     },
     {
       method: 'delete',
       path: '/:id',
       middleware: [adminOnly],
-      handler: mncpHandlers.deleteById,
+      handler: MunicipalityController.deleteById,
     },
   ],
 }
