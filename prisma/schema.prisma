@@ -42,11 +42,12 @@ model Geocache {
   name           String
   coords         String
   verified       Boolean    @default(false)
+  public         Boolean    @default(true)
   municipalityId String
-  userId         String
+  userId         String?
 
   municipality Municipality   @relation(fields: [municipalityId], references: [id])
-  user         User           @relation(fields: [userId], references: [id])
+  user         User?          @relation(fields: [userId], references: [id])
   comments     CacheComment[]
 }
 
@@ -56,10 +57,10 @@ model CacheComment {
   updatedAt DateTime @updatedAt
   body      String
   cacheId   String
-  userId    String
+  userId    String?
 
-  cache     Geocache @relation(fields: [cacheId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
+  cache     Geocache @relation(fields: [cacheId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 }
 
 model User {
@@ -81,7 +82,7 @@ model Token {
   userId    String
   token     String
   revoked   Boolean  @default(false)
-  belongsTo User     @relation(fields: [userId], references: [id])
+  belongsTo User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Municipality {
