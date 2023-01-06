@@ -3,3 +3,4 @@ logs/
 node_modules/
 dev-db.sqlite
 _data/caches.json
+_data/users.json
