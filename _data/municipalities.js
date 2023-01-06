@@ -4,6 +4,9 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 const addMunicipalities = async () => {
+  // delete all
+  await prisma.municipality.deleteMany({})
+
   for (const key in municipalities) {
     let nameSv = municipalities[key].KUNTANIMISV
     let name = municipalities[key].KUNTANIMIFI
