@@ -34,56 +34,61 @@ enum CACHE_TYPE {
 }
 
 model Geocache {
-  id              String        @id @default(uuid())
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  gc              String        @unique
-  kind            CACHE_TYPE    @default(TRADITIONAL)
-  name            String
-  coords          String
-  verified        Boolean       @default(false)
-  municipalityId  String
+  id             String     @id @default(uuid())
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  gc             String     @unique
+  kind           CACHE_TYPE @default(TRADITIONAL)
+  name           String
+  coords         String
+  verified       Boolean    @default(false)
+  municipalityId String
+  userId         String
 
-  municipality    Municipality  @relation(fields: [municipalityId], references: [id])
-  comments        CacheComment[]
+  municipality Municipality   @relation(fields: [municipalityId], references: [id])
+  user         User           @relation(fields: [userId], references: [id])
+  comments     CacheComment[]
 }
 
 model CacheComment {
-  id        String    @id @default(uuid())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   body      String
   cacheId   String
-  cache     Geocache  @relation(fields: [cacheId], references: [id])
   userId    String
-  user      User      @relation(fields: [userId], references: [id])
+
+  cache     Geocache @relation(fields: [cacheId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model User {
-  id        String    @id @default(uuid())
-  createdAt DateTime  @default(now())
+  id        String         @id @default(uuid())
+  createdAt DateTime       @default(now())
   username  String
-  email     String    @unique
+  email     String         @unique
   password  String
-  role      USER_ROLE @default(PROSPECT)
+  role      USER_ROLE      @default(PROSPECT)
+
   tokens    Token[]
   comments  CacheComment[]
+  caches    Geocache[]
 }
 
 model Token {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  userId      String
-  token       String
-  revoked     Boolean  @default(false)
-  belongsTo   User     @relation(fields: [userId], references: [id])
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  userId    String
+  token     String
+  revoked   Boolean  @default(false)
+  belongsTo User     @relation(fields: [userId], references: [id])
 }
 
 model Municipality {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  code        Int      @unique
-  name        String
-  caches      Geocache[]
+  id        String     @id @default(uuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  code      Int        @unique
+  name      String
+  caches    Geocache[]
 }
