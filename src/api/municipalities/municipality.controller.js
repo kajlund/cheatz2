@@ -6,7 +6,7 @@ const { NotFoundError } = require('../../modules/errors')
 const { validateMunicipality, validateMunicipalityUpdate } = require('./municipality.validators')
 
 class MunicipalityController {
-  async addMunicipality(req, res, next) {
+  async addMunicipality(req, res) {
     const validation = await validateMunicipality(req.body)
     if (!validation.isValid) {
       return res.status(StatusCodes.BAD_REQUEST).json({
@@ -25,7 +25,7 @@ class MunicipalityController {
     })
   }
 
-  async deleteById(req, res, next) {
+  async deleteById(req, res) {
     const { id } = req.params
     const data = await MunicipalityRepository.destroy(id)
     if (!data) throw new NotFoundError()
@@ -36,7 +36,7 @@ class MunicipalityController {
     })
   }
 
-  async findAll(req, res, next) {
+  async findAll(req, res) {
     const data = await MunicipalityRepository.findMany()
     res.status(StatusCodes.OK).json({
       success: true,
@@ -45,7 +45,7 @@ class MunicipalityController {
     })
   }
 
-  async getById(req, res, next) {
+  async getById(req, res) {
     const { id } = req.params
     const data = await MunicipalityRepository.findUnique({ id })
     if (!data) throw new NotFoundError()
@@ -56,7 +56,7 @@ class MunicipalityController {
     })
   }
 
-  async getByNamePart(req, res, next) {
+  async getByNamePart(req, res) {
     const { name } = req.params
     const data = await MunicipalityRepository.findMany({
       name: { contains: name },
@@ -68,7 +68,7 @@ class MunicipalityController {
     })
   }
 
-  async updateMunicipality(req, res, next) {
+  async updateMunicipality(req, res) {
     const { id } = req.params
     const validation = await validateMunicipalityUpdate(req)
     if (!validation.isValid) {
