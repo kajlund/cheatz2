@@ -6,11 +6,13 @@ const { AppError } = require('./modules/errors')
 const authRoutes = require('./api/auth/auth.routes')
 const logger = require('./modules/logger')
 const mncpRoutes = require('./api/municipalities/municipality.routes')
+const cacheRoutes = require('./api/geocaches/geocache.routes')
+const userRoutes = require('./api/users/user.routes')
 
 class Router {
   constructor() {
     this.router = express.Router()
-    this.apiRoutes = [authRoutes, mncpRoutes]
+    this.apiRoutes = [authRoutes, userRoutes, mncpRoutes, cacheRoutes]
     this.webRoutes = []
   }
 

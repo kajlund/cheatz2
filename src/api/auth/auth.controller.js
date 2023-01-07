@@ -1,9 +1,12 @@
 const { StatusCodes, ReasonPhrases } = require('http-status-codes')
 
 const { UnauthorizedError } = require('../../modules/errors')
-const { validateLogon, validateSignup } = require('./auth.validators')
+const { validateLogon } = require('./auth.validators')
 const { generateTokens, passwordsMatch } = require('./auth.service')
-const { addUser, getUserByEmail } = require('../users/user.service')
+const { validateNewUser } = require('../users/user.validators')
+const UserService = require('../users/user.service')
+const cnf = require('../../config')
+const Mailer = require('../../modules/mailer')
 
 const sanitizedResponse = (user, tokens) => {
   return {
@@ -27,7 +30,7 @@ class AuthController {
       })
     }
 
-    const user = await getUserByEmail(validation.data.email)
+    const user = await UserService.getUserByEmail(validation.data.email)
     if (!user) throw new UnauthorizedError()
     // Verify password
     const passwordOK = await passwordsMatch(user, validation.data.password)
@@ -41,7 +44,7 @@ class AuthController {
   }
 
   async register(req, res, next) {
-    const validation = await validateSignup(req.body)
+    const validation = await validateNewUser(req.body)
     if (!validation.isValid) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         success: false,
@@ -50,9 +53,17 @@ class AuthController {
       })
     }
 
-    const user = await addUser(validation.data)
+    const user = await UserService.addUser(validation.data)
     // get tokens
     const tokens = await generateTokens(user)
+
+    // Send verification email
+    await Mailer.send('email-verification', (message) => {
+      message.from(cnf.mail.from).to(user.email).subject('Email verification').with({
+        username: user.username,
+        email: user.email,
+      })
+    })
 
     // Return result
     res.json({

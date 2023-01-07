@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 
 const cnf = require('../config')
 const { UnauthorizedError } = require('../modules/errors')
-const { getUserById } = require('../api/users/user.service')
+const UserService = require('../api/users/user.service')
 
 exports.auth = async (req, res, next) => {
   const authHeader = req.headers.authorization
@@ -12,7 +12,7 @@ exports.auth = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, cnf.jwtAccessTokenSecret)
-    req.user = await getUserById(decoded.id)
+    req.user = await UserService.getUserById(decoded.id)
     next()
   } catch (err) {
     next(new UnauthorizedError(err.message))
