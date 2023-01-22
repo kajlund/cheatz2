@@ -8,12 +8,13 @@ const logger = require('./modules/logger')
 const mncpRoutes = require('./api/municipalities/municipality.routes')
 const cacheRoutes = require('./api/geocaches/geocache.routes')
 const userRoutes = require('./api/users/user.routes')
+const webRoutes = require('./pages/pages.routes')
 
 class Router {
   constructor() {
     this.router = express.Router()
     this.apiRoutes = [authRoutes, userRoutes, mncpRoutes, cacheRoutes]
-    this.webRoutes = []
+    this.webRoutes = [webRoutes]
   }
 
   create(app) {
@@ -64,7 +65,7 @@ class Router {
   }
 
   _attachWebRoutes() {
-    this._attachRoutes(this.webRoutes)
+    this._attachRoutes(this.webRoutes, '')
   }
 
   _attachApiRoutes() {

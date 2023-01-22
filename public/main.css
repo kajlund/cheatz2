@@ -1,0 +1,127 @@
+/***********************************
+ * Fonts
+ ***********************************/
+
+@import url('https://fonts.googleapis.com/css?family=Nunito:400|Roboto:400');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&family=Montserrat&display=swap');
+
+
+/*****************************
+ * Variables
+ *****************************/
+
+:root{
+  --col-white:           #fff;
+  --col-grey-dk:         #102a42;
+  --col-grey-md:         #617d98;
+  --col-grey-lt:         #f1f5f8;
+
+  --col-primary:         #f58c33;
+  --col-primary-light:   #e9b949;
+  --col-primary-dark:    #c84b31;
+  --col-primary-darkest: #350900;
+
+  --col-btn-highlight:   #c3e76a;
+
+  --ff-primary:   "Nunito", sans-serif;
+  --ff-secondary: "Roboto", sans-serif;
+
+  --transition: all 0.3s linear;
+  --spacing: 0.1rem;
+  --radius: 0.5rem;
+
+  /* Box Shadows */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/*****************************
+ * Simple reset
+ *****************************/
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/*****************************
+ * Globals for mobile first
+ *****************************/
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  /* margin-top: 5rem; */
+  font-family: var(--ff-primary);
+  color: var(--col-grey-dk);
+  line-height: 1.5;
+  font-size: 0.875rem; /* 14px for mobile 1st */
+}
+
+a { text-decoration: none; }
+
+img {
+  width: 100%;
+  display: block;
+}
+
+h1, h2, h3, h4 {
+  letter-spacing: var(--spacing);
+  /* text-transform: capitalize; */
+  line-height: 1.25;
+  margin-bottom: 0.75rem;
+}
+
+h1 { font-size: 3rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 0.875rem; }
+p  { margin-bottom: 1.25rem; }
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+/*****************************
+ * Globals for larger screens
+ *****************************/
+
+@media screen and (min-width:800px) {
+  h1, h2, h3, h4 { line-height: 1; }
+  h1   { font-size: 4rem;   }
+  h2   { font-size: 2.5rem; }
+  h3   { font-size: 2rem;   }
+  h4   { font-size: 1rem;   }
+  body { font-size: 1rem;   }
+}
+
+/****************************
+ * More shared styles
+ ****************************/
+
+.btn {
+  text-transform: uppercase;
+  background: var(--col-primary);
+  color: var(--col-white);
+  padding: 0.375rem 0.75rem;
+  letter-spacing: var(--spacing);
+  display: inline-block; /* So can add margin*/
+  font-weight: 700;
+  transition: var(--transition);
+  font-size: 1rem;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+  color: var(--col-primary-darkest);
+  background: var(--col-primary-light);
+}
